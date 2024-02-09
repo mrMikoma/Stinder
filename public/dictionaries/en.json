@@ -1,0 +1,28 @@
+{
+  "common": {
+    "title": "LUT-Stinder",
+    "description": "Official website of LUT-Stinder",
+    "welcome": "Welcome to LUT-Stinder website"
+  },
+
+  "nav": {
+    "home": "Home",
+    "chat": "Chat",
+    "match": "Match",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "profile": "Profile"
+  },
+
+  "login": {
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Login",
+    "error": "Invalid username or password",
+    "success": "Login successful",
+    "logout": "Logout successful",
+    "loginproblem": "Trouble logging in?"
+  }
+}

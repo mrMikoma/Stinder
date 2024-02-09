@@ -1,0 +1,28 @@
+{
+  "common": {
+    "title": "LUT-Stinder",
+    "description": "Tämä on LUT-Stinderin kotisivu",
+    "welcome": "Tervetuloa LUT-Stinderiin!"
+  },
+
+  "nav": {
+    "home": "Koti",
+    "chat": "Keskustelu",
+    "match": "Parita",
+    "login": "Kirjaudu sisään",
+    "logout": "Kirjaudu ulos",
+    "register": "Rekisteröidy",
+    "profile": "Profiili"
+  },
+
+  "login": {
+    "title": "Kirjaudu sisään",
+    "username": "Käyttäjänimi",
+    "password": "Salasana",
+    "submit": "Kirjaudu sisään",
+    "error": "Virhe kirjautumisessa",
+    "success": "Kirjautuminen onnistui",
+    "logout": "Ulos kirjautuminen onnistui",
+    "loginproblem": "Ongelma kirjautumisessa?"
+  }
+}
