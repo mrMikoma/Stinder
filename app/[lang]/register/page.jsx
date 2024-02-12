@@ -1,6 +1,6 @@
 import { getDictionary } from "../../../utils/dictionaries";
 
-const Login = async ({ params: { lang } }) => {
+const Register = async ({ params: { lang } }) => {
   const dict = await getDictionary(lang);
 
   return (
@@ -30,4 +30,4 @@ const Login = async ({ params: { lang } }) => {
   );
 };
 
-export default Login;
+export default Register;

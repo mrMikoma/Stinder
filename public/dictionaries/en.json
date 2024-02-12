@@ -10,6 +10,7 @@
     "chat": "Chat",
     "match": "Match",
     "login": "Login",
+    "login_google": "Login with Google",
     "logout": "Logout",
     "register": "Register",
     "profile": "Profile"

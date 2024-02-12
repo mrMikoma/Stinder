@@ -10,6 +10,7 @@
     "chat": "Keskustelu",
     "match": "Parita",
     "login": "Kirjaudu sisään",
+    "login_google": "Kirjaudu sisään Google-tilillä",
     "logout": "Kirjaudu ulos",
     "register": "Rekisteröidy",
     "profile": "Profiili"

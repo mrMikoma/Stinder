@@ -24,6 +24,7 @@
     "swr": "^2.2.4"
   },
   "devDependencies": {
+    "@types/node": "20.11.17",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",

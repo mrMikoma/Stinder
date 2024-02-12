@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getDictionary } from "../../utils/dictionaries";
-import Button from "./components/Button.jsx";
+import Button from "../components/Button.jsx";
 
 const Home = async ({ params: { lang } }) => {
   const dict = await getDictionary(lang);
@@ -23,6 +23,7 @@ const Home = async ({ params: { lang } }) => {
       </div>
       <div className="flex flex-col items-center">
         <Button props={{ header: dict.nav.login, url: "/login" }} />
+        <Button props={{ header: dict.nav.login_google, url: "/api/auth/signin" }} />
         <Button props={{ header: dict.nav.register, url: "/register" }} />
       </div>
       <h2 className="text-lg font-bold mt-4">{dict.login.loginproblem}</h2>

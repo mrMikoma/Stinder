@@ -1,29 +1,17 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
 import Logo from "./Logo";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="bg-tinder-pink p-4">
-      <nav className="flex flex-col sm:flex-row mx-auto justify-between items-center">
+      <nav className="flex flex-col sm:flex-row mx-auto justify-center items-center">
         <div className="flex-initial p-2">
           <Link href="/" className="text-unna-white flex-none">
             <Logo />
           </Link>
         </div>
-        <div className="block sm:hidden">
-          <button
-            className={`flex items-center px-3 py-2 rounded text-unna-gray hover:text-unna-beige`}
-            onClick={() => setIsOpen(!isOpen)}
-          ></button>
-        </div>
         <div
-          className={`sm:flex mx-auto w-full text-2xl m-2 ${
-            isOpen ? "flex" : "hidden"
-          } sm:items-center items-stretch justify-center sm:justify-start`}
+          className={`sm:flex mx-auto w-full text-2xl m-2 $ sm:items-center items-stretch justify-center sm:justify-start`}
         >
           <Link
             href="/match"
@@ -67,3 +55,9 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+/*
+          {session ? (
+            <Link href="/api/auth/signout?callbackUrl=/">Log out</Link>
+          ) : null}
+*/

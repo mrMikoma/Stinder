@@ -12,7 +12,7 @@ export const metadata = {
 const RootLayout = ({ children }) => (
   <html>
     <body>
-      <main className="bg-white">
+      <main className="bg-tinder-pink">
         {children}
       </main>
     </body>
