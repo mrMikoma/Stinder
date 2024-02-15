@@ -22,9 +22,9 @@ const Home = async ({ params: { lang } }) => {
         <p className="text-lg">{dict.common.welcome}</p>
       </div>
       <div className="flex flex-col items-center">
-        <Button props={{ header: dict.nav.login, url: "/login" }} />
+        <Button props={{ header: dict.nav.login, url: "/auth/login" }} />
         <Button props={{ header: dict.nav.login_google, url: "/api/auth/signin" }} />
-        <Button props={{ header: dict.nav.register, url: "/register" }} />
+        <Button props={{ header: dict.nav.register, url: "/auth/register" }} />
       </div>
       <h2 className="text-lg font-bold mt-4">{dict.login.loginproblem}</h2>
     </div>

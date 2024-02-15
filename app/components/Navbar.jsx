@@ -1,7 +1,26 @@
 import Link from "next/link";
+import { auth, signOut } from "../../auth";
+import { redirect } from "next/navigation";
 import Logo from "./Logo";
 
-const Navbar = () => {
+const Navbar = async () => {
+  const session = await auth();
+  console.log(session);
+
+  const SignOut = () => {
+    return (
+      <form
+        action={async () => {
+          "use server";
+          await signOut();
+          redirect("/auth/signin");
+        }}
+      >
+        <button type="submit">Sign out</button>
+      </form>
+    );
+  };
+
   return (
     <div className="bg-tinder-pink p-4">
       <nav className="flex flex-col sm:flex-row mx-auto justify-center items-center">
@@ -31,6 +50,16 @@ const Navbar = () => {
           >
             Profile
           </Link>
+        </div>
+        <div>
+          <div>
+            {session?.user ? session.user.name : null}
+            {session ? (
+              <SignOut />
+            ) : (
+              <Link href="/api/auth/signin">Sign in</Link>
+            )}
+          </div>
         </div>
         <div className="flex flex-row sm:flex-col items-center">
           <Link

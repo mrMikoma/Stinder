@@ -1,9 +1,12 @@
+import { SessionProvider } from "next-auth/react";
 import Navbar from "../../components/Navbar";
 
 const AppLayout = ({ children }) => (
   <section>
-    <Navbar />
-    {children}
+    <SessionProvider>
+      <Navbar />
+      {children}
+    </SessionProvider>
   </section>
 );
 
