@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { auth, signOut } from "../../auth";
-import { redirect } from "next/navigation";
+import { signOut } from "@/utils/actions";
+import { cookies } from "next/headers";
 import Logo from "./Logo";
 
 const Navbar = async () => {
-  const session = await auth();
-  console.log(session);
+  const session = cookies().get("session");
 
   const SignOut = () => {
     return (
@@ -13,7 +12,6 @@ const Navbar = async () => {
         action={async () => {
           "use server";
           await signOut();
-          redirect("/");
         }}
       >
         <button type="submit">Sign out</button>
@@ -57,7 +55,7 @@ const Navbar = async () => {
             {session ? (
               <SignOut />
             ) : (
-              <Link href="/api/auth/signin">Sign in</Link>
+              <Link href="/en/auth/login">Sign in</Link>
             )}
           </div>
         </div>

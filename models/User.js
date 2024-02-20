@@ -1,28 +1,23 @@
 import mongoose from "mongoose";
 
-// Define the user schema
-const userSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    unique: true,
-    required: true,
+// Define user schema
+const userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+    },
+    email: {
+      type: String,
+      unique: true,
+    },
+    password: {
+      type: String,
+    },
+    goodFriends: [String],
+    loveFriends: [String],
+    notFriends: [String],
   },
-  username: {
-    type: String,
-    required: [true, "Please provide username"],
-  },
-  email: {
-    type: String,
-    required: [true, "Please provide email"],
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: [true, "Please provide a password"],
-  },
-  verifyToken: String,
-  verifyTokenExpiry: Date,
-  friends: [String],
-});
+  { timestamps: true }
+);
 
-export default mongoose.models.User || mongoose.model('User', userSchema);
+export default mongoose.models.User || mongoose.model("User", userSchema);

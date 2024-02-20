@@ -1,147 +1,161 @@
 "use server";
 
-import { signIn } from "@/auth";
-import clientPromise from "../utils/mongodb";
+import { dbConnect } from "../utils/mongodb";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
-import { User, Profile } from "../models/User";
+import User from "../models/User";
+import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
 
 // References:
 // - https://nextjs.org/docs/app/building-your-application/authentication
-// - https://next-auth.js.org/providers/credentials
+// - https://nextjs.org/docs/app/api-reference/functions/cookies
+// - 
 
 // TODO:
-// - Add error handling with failed login
-// - Add error handling with failed registration
-
-export async function authenticate(formData) {
-  try {
-    await signIn("credentials", formData);
-  } catch (error) {
-    if (error) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return "Invalid credentials.";
-        default:
-          return "Something went wrong.";
-      }
-    }
-    throw error;
-  }
-}
+// - Add error handling for all functions
 
 export async function register(formData) {
   try {
-    console.log("registering..."); // debug
-    console.log(formData); // debug
+    // Validate form data
+    if (!formData) {
+      throw new Error("Form data is required.");
+    } else if (!formData.get("username")) {
+      throw new Error("Username is required.");
+    } else if (!formData.get("email")) {
+      throw new Error("Email is required.");
+    } else if (!formData.get("password")) {
+      throw new Error("Password is required.");
+    }
 
-    const validatedFields = {
+    // Parse form data
+    const validatedFormData = {
       username: formData.get("username"),
       email: formData.get("email"),
       password: formData.get("password"),
     };
-    console.log("validoitu: " + validatedFields); // debug
 
-    // Validate form data
-    if (
-      !validatedFields.username ||
-      !validatedFields.email ||
-      !validatedFields.password
-    ) {
-      throw new RegisterError("Invalid credentials.");
-    }
-
-    console.log("here...?"); // debug
-
-    // Connect to the database
-    const client = await clientPromise;
-    const users = client.db(process.env.DB_NAME).collection("users");
-
-    console.log("here..2..?"); // debug
+    // Connect to database
+    await dbConnect();
 
     // Check if user exists
-    const userExists = await users.findOne({ email: validatedFields.email });
-    if (userExists) {
-      console.log("User already exists."); // debug
-      throw new RegisterError("User already exists.");
+    let newUser = await User.findOne({
+      email: validatedFormData.email,
+    });
+    if (newUser) {
+      throw new Error("User already exists.");
     }
 
     // Hash password
-    const hashedPassword = bcrypt.hashSync(validatedFields.password, 10);
+    const hashedPassword = await bcrypt.hash(validatedFormData.password, 10);
 
-    console.log("here..3..?"); // debug
-
-    // Create new user
-    const newUser = new User({
-      username: validatedFields.username,
-      email: validatedFields.email,
+    // Create user
+    newUser = new User({
+      username: validatedFormData.username,
+      email: validatedFormData.email,
       password: hashedPassword,
-      verifyToken: null,
-      verifyTokenExpiry: null,
       friends: [],
     });
 
-    console.log("here..4..?"); // debug
-
-    // Insert user to database
-    try {
-      await newUser.save();
-    } catch (error) {
-      console.log("Error: ", error); // debug
-    }
-
-    console.log("New user created successfully!"); // debug
+    // Save user
+    const savedUser = await newUser.save();
+    console.log("User saved."); // debug
+    return savedUser;
   } catch (error) {
-    if (error) {
-      switch (error.type) {
-        case "RegisterError":
-          return "Invalid credentials.";
-        default:
-          return "Something went wrong.";
-      }
-    }
-    throw error;
+    console.log(error); // debug
   }
-  redirect("/api/auth/signin");
+  redirect("/auth/login");
+}
+
+export async function authenticate(formData) {
+  try {
+    console.log("Authenticating..."); // debug
+    // Validate form data
+    if (!formData) {
+      throw new Error("Form data is required.");
+    } else if (!formData.get("email")) {
+      throw new Error("Email is required.");
+    } else if (!formData.get("password")) {
+      throw new Error("Password is required.");
+    }
+
+    // Parse form data
+    const validatedFormData = {
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+
+    // Connect to database
+    await dbConnect();
+
+    // Check if user exists
+    let user = await User.findOne({
+      email: validatedFormData.email,
+    });
+    if (!user) {
+      throw new Error("User doesn't exists.");
+    }
+
+    // Validate password
+    const passwordIsValid = await bcrypt.compare(
+      validatedFormData.password,
+      user.password
+    );
+    if (!passwordIsValid) {
+      throw new Error("Invalid credentials");
+    }
+
+    // Generate payload
+    const payload = {
+      userId: user._id,
+    };
+
+    // Generate JWT token
+    const encryptedSessionData = jwt.sign(payload, process.env.AUTH_SECRET, {
+      expiresIn: "1h",
+    });
+
+    // Set token in cookie
+    cookies().set("session", encryptedSessionData, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 1000,
+      path: "/",
+    });
+
+    // Return user
+    console.log("User authenticated!"); // debug
+  } catch (error) {
+    console.log(error); // debug
+    // make it handle errors
+  }
+  redirect("/home");
+}
+
+export async function signOut() {
+  try {
+    console.log("Signing out..."); // debug
+    // Remove session cookie
+    cookies().delete("session");
+    console.log("Signed out."); // debug
+  } catch (error) {
+    console.log(error); // debug
+  }
+  redirect("/");
 }
 
 export async function likeUser(userId) {
   try {
-    console.log("liking user..."); // debug
-    console.log(userId); // debug
+    console.log("Liking user..."); // debug
   } catch (error) {
-    if (error) {
-      switch (error.type) {
-        case "LikeError":
-          return "Invalid credentials.";
-        default:
-          return "Something went wrong.";
-      }
-    }
-    throw error;
+    console.log(error); // debug
   }
 }
 
 export async function nextUser(userId) {
   try {
-    console.log("getting next user..."); // debug
-    const users = await User.find();
-
-    // Print all users
-    users.forEach((user) => {
-      console.log(user);
-    });
-
-    console.log("All users logged."); // debug
+    console.log("Next user..."); // debug
   } catch (error) {
-    if (error) {
-      switch (error.type) {
-        case "NextUserError":
-          return "Invalid credentials.";
-        default:
-          return "Something went wrong.";
-      }
-    }
-    throw error;
+    console.log(error); // debug
   }
 }

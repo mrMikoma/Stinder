@@ -1,17 +1,17 @@
+import { cookies } from "next/headers";
 import { getDictionary } from "../../../utils/dictionaries";
-import { auth } from "../../../auth";
 import Crosslikeicon from "../../components/icons/crosslikeicon";
 import Dislikeicon from "../../components/icons/dislikeicon";
 import Likeicon from "../../components/icons/likeicon";
 import Loveicon from "../../components/icons/loveicon";
+import Unauthorized from "@/app/components/Unauthorized";
 
 const Profile = async ({ params: { lang } }) => {
   const dict = await getDictionary(lang);
-  const session = await auth();
-  console.log(session);
+  const session = cookies().get("session");
 
   if (!session) {
-    return <h1>Not authenticated</h1>;
+    return <Unauthorized />;
   } else {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-white text-white">

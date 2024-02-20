@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+
 import { register } from "../../utils/actions";
 
 export const Registerform = () => {
@@ -7,6 +7,7 @@ export const Registerform = () => {
     const user = await register(formData);
     if (user) {
       console.log("User created: ", user); // debug
+      await handleDirect("/auth/login")
     } else {
       console.log("User not created."); // debug
     }
@@ -36,5 +37,3 @@ export const Registerform = () => {
     </div>
   );
 };
-
-//export default Registerform; 

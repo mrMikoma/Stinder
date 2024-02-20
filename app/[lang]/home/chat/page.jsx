@@ -1,6 +1,5 @@
 import Unauthorized from "@/app/components/Unauthorized";
 import { getDictionary } from "../../../../utils/dictionaries";
-import { Matchcard } from "../../../components/Matchcard";
 import { cookies } from "next/headers";
 
 const Match = async ({ params: { lang } }) => {
@@ -19,7 +18,7 @@ const Match = async ({ params: { lang } }) => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-white text-black relative">
         <div className="flex flex-col items-center">
-          <Matchcard props={props} />
+          <h1>Ooot ines bro</h1>
         </div>
       </div>
     );

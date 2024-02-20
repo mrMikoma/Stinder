@@ -1,36 +1,31 @@
 "use client";
 
 import { authenticate } from "../../utils/actions";
-import { useFormState, useFormStatus } from "react-dom";
 
 export const Loginform = () => {
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
-
-  function LoginButton() {
-    const { pending } = useFormStatus();
-
-    return (
-      <button aria-disabled={pending} type="submit">
-        Login
-      </button>
-    );
-  }
+  const authenticateUser = async (formData) => {
+    const user = await authenticate(formData);
+    if (user) {
+      console.log("User login: ", user); // debug
+    } else {
+      console.log("User not logged in."); // debug
+    }
+  };
 
   return (
     <div>
-      <form action={dispatch}>
-        <input type="email" name="email" placeholder="Email" required />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-        />
-        <div>{errorMessage && <p>{errorMessage}</p>}</div>
-        <LoginButton />
+      <form action={authenticateUser}>
+        <div className="text-3xl font-bold mb-4 flex flex-col">
+          <input type="email" name="email" placeholder="Email" required />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+          <button type="submit">Log in</button>
+        </div>
       </form>
     </div>
   );
 };
-
-//export default Registerform;
