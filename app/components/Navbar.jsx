@@ -13,7 +13,7 @@ const Navbar = async () => {
         action={async () => {
           "use server";
           await signOut();
-          redirect("/auth/signin");
+          redirect("/");
         }}
       >
         <button type="submit">Sign out</button>
@@ -33,19 +33,19 @@ const Navbar = async () => {
           className={`sm:flex mx-auto w-full text-2xl m-2 $ sm:items-center items-stretch justify-center sm:justify-start`}
         >
           <Link
-            href="/match"
+            href="/home/match"
             className="text-white devider-right hover:text-tinder-gray"
           >
             Match
           </Link>
           <Link
-            href="/chat"
+            href="/home/chat"
             className="text-white devider-right hover:text-tinder-gray"
           >
             Chat
           </Link>
           <Link
-            href="/profile"
+            href="/home/profile"
             className="text-white devider-left hover:text-tinder-gray"
           >
             Profile

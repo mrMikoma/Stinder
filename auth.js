@@ -1,10 +1,12 @@
 import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "./utils/mongodb";
+
+// TODO:
+// - Add validation with zod
 
 export const {
   handlers: { GET, POST },
@@ -14,12 +16,11 @@ export const {
 } = NextAuth({
   adapter: MongoDBAdapter(clientPromise),
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
     Credentials({
       id: "credentials",
+      pages: {
+        signIn: "/auth/signin",
+      },
       credentials: {
         email: {
           label: "E-mail",
@@ -31,18 +32,23 @@ export const {
         },
       },
       async authorize(credentials) {
+        // Connect to the database
         const client = await clientPromise;
         const usersCollection = client
           .db(process.env.DB_NAME)
           .collection("users");
+
+        console.log("credentials: ", credentials); // debug
+
+        // Validate email
         const email = credentials?.email.toLowerCase();
         const user = await usersCollection.findOne({ email });
         if (!user) {
-          console.log("User does not exist.");  // debug
+          console.log("User does not exist."); // debug
           throw new Error("User does not exist.");
         }
 
-        // validate password
+        // Validate password
         const passwordIsValid = await bcrypt.compare(
           credentials.password,
           user.password
@@ -52,6 +58,7 @@ export const {
           throw new Error("Invalid credentials");
         }
 
+        // Return user
         return {
           id: user._id.toString(),
           ...user,
@@ -59,6 +66,7 @@ export const {
       },
     }),
   ],
+  secret: process.env.AUTH_SECRET,
   session: {
     strategy: "jwt",
   },
