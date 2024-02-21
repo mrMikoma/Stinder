@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { signOut } from "@/utils/actions";
+import { logAllUsers, signOut } from "@/utils/actions";
 import { cookies } from "next/headers";
 import Logo from "./Logo";
 
@@ -15,6 +15,19 @@ const Navbar = async () => {
         }}
       >
         <button type="submit">Sign out</button>
+      </form>
+    );
+  };
+
+  const LogUsers = () => {
+    return (
+      <form
+        action={async () => {
+          "use server";
+          await logAllUsers();
+        }}
+      >
+        <button type="submit">users</button>
       </form>
     );
   };
@@ -49,14 +62,13 @@ const Navbar = async () => {
             Profile
           </Link>
         </div>
+        <div className="flex flex-row sm:flex-col items-center">
+          <LogUsers />
+        </div>
         <div>
           <div>
             {session?.user ? session.user.name : null}
-            {session ? (
-              <SignOut />
-            ) : (
-              <Link href="/en/auth/login">Sign in</Link>
-            )}
+            {session ? <SignOut /> : <Link href="/en/auth/login">Sign in</Link>}
           </div>
         </div>
         <div className="flex flex-row sm:flex-col items-center">
@@ -82,9 +94,3 @@ const Navbar = async () => {
 };
 
 export default Navbar;
-
-/*
-          {session ? (
-            <Link href="/api/auth/signout?callbackUrl=/">Log out</Link>
-          ) : null}
-*/

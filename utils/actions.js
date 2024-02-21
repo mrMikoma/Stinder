@@ -10,7 +10,7 @@ import { cookies } from "next/headers";
 // References:
 // - https://nextjs.org/docs/app/building-your-application/authentication
 // - https://nextjs.org/docs/app/api-reference/functions/cookies
-// - 
+// -
 
 // TODO:
 // - Add error handling for all functions
@@ -54,13 +54,12 @@ export async function register(formData) {
       username: validatedFormData.username,
       email: validatedFormData.email,
       password: hashedPassword,
-      friends: [],
     });
 
     // Save user
-    const savedUser = await newUser.save();
+    await newUser.save();
     console.log("User saved."); // debug
-    return savedUser;
+    return "success";
   } catch (error) {
     console.log(error); // debug
   }
@@ -108,6 +107,10 @@ export async function authenticate(formData) {
     // Generate payload
     const payload = {
       userId: user._id,
+      username: user.username,
+      email: user.email,
+      bio: user.bio,
+      image: user.image,
     };
 
     // Generate JWT token
@@ -143,18 +146,19 @@ export async function signOut() {
   }
   redirect("/");
 }
-
-export async function likeUser(userId) {
+export async function logAllUsers(userId) {
   try {
-    console.log("Liking user..."); // debug
-  } catch (error) {
-    console.log(error); // debug
-  }
-}
+    console.log("***LOGGING ALL USERS FROM DB***"); // debug
+    // Connect to database
+    await dbConnect();
 
-export async function nextUser(userId) {
-  try {
-    console.log("Next user..."); // debug
+    // Get all users
+    const allUsers = await User.find({});
+    allUsers.forEach((user) => {
+      console.log(user); // debug
+    });
+
+    console.log("***ALL USERS LOGGED***"); // debug
   } catch (error) {
     console.log(error); // debug
   }

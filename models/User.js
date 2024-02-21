@@ -13,6 +13,14 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
     },
+    bio: {
+      type: String,
+      default: "No bio.",
+    },
+    image: {
+      type: String,
+      default: "/images/ai_bot_kuva_1.png",
+    },
     goodFriends: [String],
     loveFriends: [String],
     notFriends: [String],

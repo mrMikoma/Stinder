@@ -1,13 +1,14 @@
 "use client";
 
+import { redirect } from "next/navigation";
 import { register } from "../../utils/actions";
 
 export const Registerform = () => {
   const createUser = async (formData) => {
     const user = await register(formData);
-    if (user) {
+    if (user === "success") {
       console.log("User created: ", user); // debug
-      await handleDirect("/auth/login")
+      redirect("/auth/login")
     } else {
       console.log("User not created."); // debug
     }
