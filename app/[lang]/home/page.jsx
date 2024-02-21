@@ -1,10 +1,8 @@
-import { cookies } from "next/headers";
-import { getDictionary } from "../../../utils/dictionaries";
-import Crosslikeicon from "../../components/icons/crosslikeicon";
-import Dislikeicon from "../../components/icons/dislikeicon";
-import Likeicon from "../../components/icons/likeicon";
-import Loveicon from "../../components/icons/loveicon";
 import Unauthorized from "@/app/components/Unauthorized";
+import { getDictionary } from "../../../utils/dictionaries";
+import { Matchcard } from "../../components/Matchcard";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
 
 const Profile = async ({ params: { lang } }) => {
   const dict = await getDictionary(lang);
@@ -13,19 +11,31 @@ const Profile = async ({ params: { lang } }) => {
   if (!session) {
     return <Unauthorized />;
   } else {
+    let decodedSession = null;
+    try {
+      // Parse session data
+      decodedSession = jwt.verify(session.value, process.env.AUTH_SECRET);
+    } catch (error) {
+      console.log(error); // debug
+    }
+
+    // If session is valid
+    let props = null;
+    if (decodedSession) {
+      props = {
+        userId: decodedSession.userId,
+        username: decodedSession.username,
+        imageSrc: decodedSession.image,
+        bio: decodedSession.bio,
+      };
+    } else {
+      console.log("Session is invalid."); // debug
+    }
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white text-white">
-        <div className="bg-tinder-1 bg-cover bg-center w-96 h-96 flex items-center justify-center">
-          <div className=" text-tinder-gray text-center tracking-wide m-8">
-            <h1 className="text-4xl font-bold mb-4">{dict.common.title}</h1>
-            <p className="text-lg">{dict.common.welcome}</p>
-          </div>
-        </div>
-        <div className="flex flex-row text-tinder-gray text-center tracking-wide m-8">
-          <Likeicon />
-          <Dislikeicon />
-          <Loveicon />
-          <Crosslikeicon />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white text-black relative">
+        <h1 className="text-2xl text-bold">Your profile</h1>
+        <div className="flex flex-col items-center">
+          <Matchcard props={props} />
         </div>
       </div>
     );
