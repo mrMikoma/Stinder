@@ -16,6 +16,16 @@
     "profile": "Profile"
   },
 
+  "register": {
+    "title": "Register",
+    "username": "Username",
+    "password": "Password",
+    "password2": "Confirm password",
+    "submit": "Register",
+    "error": "Username already exists",
+    "success": "Registration successful"
+  },
+
   "login": {
     "title": "Login",
     "username": "Username",
@@ -25,5 +35,19 @@
     "success": "Login successful",
     "logout": "Logout successful",
     "loginproblem": "Trouble logging in?"
+  },
+
+  "profile": {
+    "title": "Profile",
+    "edit_profile": "Edit profile",
+    "username": "Username",
+    "bio": "Bio",
+    "submit": "Save",
+    "error": "Profile update failed",
+    "success": "Profile update successful",
+    "liked_profiles": "Liked profiles",
+    "disliked_profiles": "Disliked profiles",
+    "no_liked_profiles": "No liked profiles",
+    "no_disliked_profiles": "No disliked profiles"
   }
 }

@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 export const Matchcard = ({ props }) => {
-  const { userId, username, imageSrc, bio} = props;
+  const { username, imageSrc, bio} = props;
 
   return (
     <div className="flex flex-col max-w-md align-top">
