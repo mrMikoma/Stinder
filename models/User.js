@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema(
       default: "/images/ai_bot_kuva_1.png",
     },
     goodFriends: [String],
-    loveFriends: [String],
     notFriends: [String],
   },
   { timestamps: true }

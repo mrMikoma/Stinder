@@ -1,6 +1,6 @@
 import Unauthorized from "@/app/components/Unauthorized";
 import { getDictionary } from "../../../utils/dictionaries";
-import { Matchcard } from "../../components/Matchcard";
+import Matchcard from "../../components/Matchcard";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 

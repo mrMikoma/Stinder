@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export const Matchcard = ({ props }) => {
+const Matchcard = ({ props }) => {
   const { username, imageSrc, bio} = props;
 
   return (
@@ -19,3 +19,5 @@ export const Matchcard = ({ props }) => {
     </div>
   );
 };
+
+export default Matchcard;

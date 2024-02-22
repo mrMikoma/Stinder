@@ -1,5 +1,3 @@
-import React from "react";
-
 const Unauthorized = () => {
   return (
     <div className="min-h-screen h-screen w-full bg-white justify-center align-middle flex mx-auto p-8">

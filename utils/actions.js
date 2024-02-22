@@ -160,12 +160,18 @@ export async function getNextUser(userID) {
     await dbConnect();
 
     // Get user's liked users
-    const likedUsersIDs = await User.findOne({ _id: userID }, "goodFriends");
+    const likedUsers = await User.findOne({ _id: userID }, "goodFriends");
+    const likedUsersIDs = likedUsers.goodFriends || [];
     console.log(likedUsersIDs); // debug
+
+    // Get user's disliked users
+    const disliked = await User.findOne({ _id: userID }, "notFriends");
+    const dislikedUsersIDs = disliked.notFriends || [];
+    console.log(dislikedUsersIDs); // debug
 
     // Find next user, who is not in liked users
     const nextUser = await User.findOne({
-      _id: { $ne: userID, $nin: likedUsersIDs },
+      _id: { $ne: userID, $nin: likedUsersIDs, $nin: dislikedUsersIDs },
     });
 
     console.log(nextUser); // debug
@@ -200,9 +206,9 @@ export async function getLikeUser(formData) {
     // - Add error handling to database operations
 
     // Check that both users exist in database
-    const user = await User.findOne({ _id: userID });
-    //const match = await User.findOne({ _id: matchID });
-    if (!user) {
+    const user = await User.findById(userID);
+    const match = await User.findById(matchID);
+    if (!user || !match) {
       throw new Error("User or match not found.");
     }
 
@@ -212,10 +218,7 @@ export async function getLikeUser(formData) {
     } else if (user.goodFriends.includes(matchID)) {
       console.log("User already liked match.");
     } else {
-      await User.updateOne(
-        { _id: userID },
-        { $push: { goodFriends: matchID } }
-      );
+      await User.updateOne({ _id: userID }, { $push: { goodFriends: matchID } });
     }
 
     console.log("User liked."); // debug
@@ -224,6 +227,55 @@ export async function getLikeUser(formData) {
     return "success";
   } catch (error) {
     console.log(error); // debug
+    // add error handling
+  }
+}
+
+export async function getDisLikeUser(formData) {
+  try {
+    console.log("Disliking user..."); // debug
+    // Validate userID
+    if (!formData) {
+      throw new Error("Form data is required.");
+    } else if (!formData.get("userID")) {
+      throw new Error("User ID is required.");
+    } else if (!formData.get("matchID")) {
+      throw new Error("Match ID is required.");
+    }
+
+    // Parse form data
+    const userID = formData.get("userID");
+    const matchID = formData.get("matchID");
+
+    // Connect to database
+    await dbConnect();
+
+    // TODO:
+    // - Add error handling to database operations
+
+    // Check that both users exist in database
+    const user = await User.findById(userID);
+    const match = await User.findById(matchID);
+    if (!user || !match) {
+      throw new Error("User or match not found.");
+    }
+
+    // Like user with error handling
+    if (userID === matchID) {
+      throw new Error("User cannot dislike themselves.");
+    } else if (user.notFriends.includes(matchID)) {
+      console.log("User already disliked match.");
+    } else {
+      await User.updateOne({ _id: userID }, { $push: { notFriends: matchID } });
+    }
+
+    console.log("User disliked."); // debug
+
+    // Return response
+    return "success";
+  } catch (error) {
+    console.log(error); // debug
+    // add error handling
   }
 }
 
