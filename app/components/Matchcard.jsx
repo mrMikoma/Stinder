@@ -1,13 +1,13 @@
 import Image from "next/image";
 
 const Matchcard = ({ props }) => {
-  const { username, imageSrc, bio} = props;
+  const { username, image, bio} = props;
 
   return (
     <div className="flex flex-col max-w-md align-top">
       <div className="bg-white rounded-lg shadow-lg p-4">
         <Image
-          src={imageSrc}
+          src={image}
           alt="Profile"
           className="rounded-lg mb-4"
           width="400"

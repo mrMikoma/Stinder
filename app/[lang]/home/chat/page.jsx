@@ -2,9 +2,9 @@ import Unauthorized from "@/app/components/Unauthorized";
 import { getDictionary } from "../../../../utils/dictionaries";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import Chat from "@/app/components/Chat";
+import Chatc from "@/app/components/Chat";
 
-const Match = async ({ params: { lang } }) => {
+const Chat = async ({ params: { lang } }) => {
   const dict = await getDictionary(lang);
   const session = cookies().get("session");
   let userID = null;
@@ -30,10 +30,10 @@ const Match = async ({ params: { lang } }) => {
 
     return (
       <div className="bg-white">
-        <Chat userID={userID} dict={dict} />
+        <Chatc userID={userID} dict={dict} />
       </div>
     );
   }
 };
 
-export default Match;
+export default Chat;

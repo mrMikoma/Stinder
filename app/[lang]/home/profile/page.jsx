@@ -11,6 +11,11 @@ import Image from "next/image";
 import jwt from "jsonwebtoken";
 import Userlist from "../../../components/Userlist";
 
+// Known issues:
+// - No submit messages
+// - No AI profile image selection is missing
+// - Page does not update after submit as expected (caching issue / client-side rendering issue)
+
 // TODO:
 // - Add submit messages
 // - Add AI profile image selection

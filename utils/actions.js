@@ -7,6 +7,7 @@ import User from "../models/User";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import Chat from "../models/Chat";
+import { revalidatePath } from "next/cache";
 
 // References:
 // - https://nextjs.org/docs/app/building-your-application/authentication
@@ -14,7 +15,11 @@ import Chat from "../models/Chat";
 // - https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations
 
 // TODO:
-// - Add error handling for all functions
+// - 
+
+/**********************************
+AUTHENTICATION AND USER MANAGEMENT
+***********************************/
 
 export async function register(formData) {
   try {
@@ -67,6 +72,8 @@ export async function register(formData) {
   redirect("/auth/login");
 }
 
+// TODO:
+// - Add error handling
 export async function authenticate(formData) {
   try {
     console.log("Authenticating..."); // debug
@@ -148,6 +155,10 @@ export async function signOut() {
   redirect("/");
 }
 
+/**********************************
+CREATE NEW MATCH
+***********************************/
+
 export async function getNextUser(userID) {
   try {
     // Validate userID
@@ -169,20 +180,37 @@ export async function getNextUser(userID) {
     const dislikedUsersIDs = disliked.notFriends || [];
     console.log(dislikedUsersIDs); // debug
 
+    // Combine liked and disliked users arrays
+    const excludedUserIDs = [...likedUsersIDs, ...dislikedUsersIDs];
+
     // Find next user, who is not in liked users
-    const nextUser = await User.findOne({
-      _id: { $ne: userID, $nin: likedUsersIDs, $nin: dislikedUsersIDs },
+    let nextUser = await User.findOne({
+      _id: { $ne: userID, $nin: excludedUserIDs },
     });
 
-    console.log(nextUser); // debug
+    // If no more users
+    if (!nextUser) {
+      console.log("No more users."); // debug
+      return "no more users";
+    }
+
+    const nextUserID = nextUser._id.toString();
+
+    console.log("ARVO ON: " + nextUserID); // debug
 
     // Return userID as response
-    return nextUser._id.valueOf();
+    return nextUserID;
   } catch (error) {
     console.log(error); // debug
   }
 }
 
+/**********************************
+USER LIKES AND DISLIKES
+***********************************/
+
+// TODO:
+// - Add error handling to database operations
 export async function getLikeUser(formData) {
   try {
     console.log("Liking user..."); // debug
@@ -201,9 +229,6 @@ export async function getLikeUser(formData) {
 
     // Connect to database
     await dbConnect();
-
-    // TODO:
-    // - Add error handling to database operations
 
     // Check that both users exist in database
     const user = await User.findById(userID);
@@ -234,6 +259,8 @@ export async function getLikeUser(formData) {
   }
 }
 
+// TODO:
+// - Add error handling to database operations
 export async function getDisLikeUser(formData) {
   try {
     console.log("Disliking user..."); // debug
@@ -252,9 +279,6 @@ export async function getDisLikeUser(formData) {
 
     // Connect to database
     await dbConnect();
-
-    // TODO:
-    // - Add error handling to database operations
 
     // Check that both users exist in database
     const user = await User.findById(userID);
@@ -282,6 +306,10 @@ export async function getDisLikeUser(formData) {
   }
 }
 
+/**********************************
+USER DATA MANAGEMENT
+***********************************/
+
 export async function getUserData(userID) {
   // Validate userID
   if (!userID) {
@@ -292,13 +320,20 @@ export async function getUserData(userID) {
   await dbConnect();
 
   // Get user
-  const user = await User.findOne({ _id: userID });
+  let user = await User.findOne({ _id: userID });
   if (!user) {
     throw new Error("User not found.");
   }
 
+  // Convert user to object
+  const userProps = {
+    username: user.username,
+    bio: user.bio,
+    image: user.image,
+  };
+
   // Return user
-  return user;
+  return userProps;
 }
 
 export async function getUpdateUser(formData) {
@@ -334,11 +369,16 @@ export async function getUpdateUser(formData) {
     await user.save();
 
     // Return response
+    revalidatePath("/[lang]/home/profile", "page");
     return "success";
   } catch (error) {
     console.log(error); // debug
   }
 }
+
+/**********************************
+GET MATCHES
+***********************************/
 
 export async function getLikedUsers(userID) {
   try {
@@ -406,10 +446,13 @@ export async function getDisLikedUsers(userID) {
   }
 }
 
+/**********************************
+CHAT
+***********************************/
+
 // TODO:
 // - testing needed
 // - Make it check matches both ways
-
 export async function getChatUsers(userID) {
   try {
     // Validate userID
@@ -444,7 +487,6 @@ export async function getChatUsers(userID) {
 
 // TODO:
 // - testing needed
-
 export async function getChatMessages(formData) {
   try {
     // Validate form data
@@ -483,7 +525,6 @@ export async function getChatMessages(formData) {
 //TODO:
 // - testing needed
 // - make it handle messages
-
 export async function getHandleMessageSend(formData) {
   try {
     // Validate form data
@@ -514,7 +555,9 @@ export async function getHandleMessageSend(formData) {
   }
 }
 
-// --- DEBUG FUNCTIONS ---
+/**********************************
+DEBUGGING FUNCTIONS
+***********************************/
 export async function logAllUsers() {
   try {
     console.log("***LOGGING ALL USERS FROM DB***"); // debug

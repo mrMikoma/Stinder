@@ -60,5 +60,12 @@
     "success": "Message sent",
     "no_messages": "No messages",
     "no_chat": "No chat"
+  },
+  "match": {
+    "title": "Match",
+    "like": "Like",
+    "dislike": "Dislike",
+    "no_matches": "No matches",
+    "no_more_matches": "No more matches"
   }
 }
