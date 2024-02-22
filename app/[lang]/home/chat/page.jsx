@@ -1,25 +1,36 @@
 import Unauthorized from "@/app/components/Unauthorized";
 import { getDictionary } from "../../../../utils/dictionaries";
 import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
+import Chat from "@/app/components/Chat";
 
 const Match = async ({ params: { lang } }) => {
   const dict = await getDictionary(lang);
   const session = cookies().get("session");
+  let userID = null;
 
   if (!session) {
-    return (
-      <Unauthorized />
-    );
+    return <Unauthorized />;
   } else {
-    const props = {
-      text: "This is a match card",
-      userId: "asd@asd.fi",
-    };
+    let decodedSession = null;
+    try {
+      // Parse session data
+      decodedSession = jwt.verify(session.value, process.env.AUTH_SECRET);
+    } catch (error) {
+      console.log(error); // debug
+    }
+
+    // If session is valid
+    if (decodedSession) {
+      userID = decodedSession.userID;
+      console.log("Session is valid."); // debug
+    } else {
+      console.log("Session is invalid."); // debug
+    }
+
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white text-black relative">
-        <div className="flex flex-col items-center">
-          <h1>Ooot ines bro</h1>
-        </div>
+      <div className="bg-white">
+        <Chat userID={userID} dict={dict} />
       </div>
     );
   }

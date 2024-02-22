@@ -49,5 +49,16 @@
     "disliked_profiles": "Disliked profiles",
     "no_liked_profiles": "No liked profiles",
     "no_disliked_profiles": "No disliked profiles"
+  },
+  "chat": {
+    "title": "Chat",
+    "send": "Send",
+    "matches": "Matches",
+    "chatwith": "Chat with",
+    "typeMessage": "Write a message",
+    "error": "Message sending failed",
+    "success": "Message sent",
+    "no_messages": "No messages",
+    "no_chat": "No chat"
   }
 }

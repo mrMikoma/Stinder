@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import User from "../models/User";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import next from "next";
+import Chat from "../models/Chat";
 
 // References:
 // - https://nextjs.org/docs/app/building-your-application/authentication
@@ -218,7 +218,10 @@ export async function getLikeUser(formData) {
     } else if (user.goodFriends.includes(matchID)) {
       console.log("User already liked match.");
     } else {
-      await User.updateOne({ _id: userID }, { $push: { goodFriends: matchID } });
+      await User.updateOne(
+        { _id: userID },
+        { $push: { goodFriends: matchID } }
+      );
     }
 
     console.log("User liked."); // debug
@@ -384,7 +387,7 @@ export async function getDisLikedUsers(userID) {
     let users = await User.findOne({ _id: userID }, "notFriends");
 
     // Get liked users' data
-    users = await User.find({ _id: { $in: users.goodFriends } });
+    users = await User.find({ _id: { $in: users.notFriends } });
     let usersProps = [];
     users.map((user) => {
       usersProps.push({
@@ -403,6 +406,115 @@ export async function getDisLikedUsers(userID) {
   }
 }
 
+// TODO:
+// - testing needed
+// - Make it check matches both ways
+
+export async function getChatUsers(userID) {
+  try {
+    // Validate userID
+    if (!userID) {
+      throw new Error("User ID is required.");
+    }
+
+    // Connect to database
+    await dbConnect();
+
+    // Get user's liked users
+    let users = await User.findOne({ _id: userID }, "goodFriends");
+
+    // Get liked users' data
+    users = await User.find({ _id: { $in: users.goodFriends } });
+    let usersProps = [];
+    users.map((user) => {
+      usersProps.push({
+        id: user._id,
+        username: user.username,
+      });
+    });
+
+    console.log(usersProps); // debug
+
+    // Return liked users
+    return usersProps;
+  } catch (error) {
+    console.log(error); // debug
+  }
+}
+
+// TODO:
+// - testing needed
+
+export async function getChatMessages(formData) {
+  try {
+    // Validate form data
+    if (!formData) {
+      throw new Error("Form data is required.");
+    } else if (!formData.get("userID")) {
+      throw new Error("User ID is required.");
+    } else if (!formData.get("matchID")) {
+      throw new Error("Match ID is required.");
+    }
+
+    // Parse form data
+    const userID = formData.get("userID");
+    const matchID = formData.get("matchID");
+
+    // Connect to database
+    await dbConnect();
+
+    // Get chat messages
+    const messages = await Chat.find({
+      $or: [
+        { senderId: userID, receiverId: matchID },
+        { senderId: matchID, receiverId: userID },
+      ],
+    });
+
+    console.log(messages); // debug
+
+    // Return chat messages
+    return messages;
+  } catch (error) {
+    console.log(error); // debug
+  }
+}
+
+//TODO:
+// - testing needed
+// - make it handle messages
+
+export async function getHandleMessageSend(formData) {
+  try {
+    // Validate form data
+    if (!formData) {
+      throw new Error("Form data is required.");
+    } else if (!formData.get("userID")) {
+      throw new Error("User ID is required.");
+    } else if (!formData.get("matchID")) {
+      throw new Error("Match ID is required.");
+    } else if (!formData.get("message")) {
+      console.log("Message is required."); // debug
+    }
+
+    // Parse form data
+    const userID = formData.get("userID");
+    const matchID = formData.get("matchID");
+    const message = formData.get("message");
+
+    console.log(message); // debug
+
+    // Handle message send
+    // TODO
+
+    // Return response
+    return "success";
+  } catch (error) {
+    console.log(error); // debug
+  }
+}
+
+// --- DEBUG FUNCTIONS ---
 export async function logAllUsers() {
   try {
     console.log("***LOGGING ALL USERS FROM DB***"); // debug
