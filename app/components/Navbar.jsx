@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
-import { logAllChats, logAllUsers, signOut } from "@/utils/actions";
+import { signOut } from "@/utils/actions";
 import Logo from "./Logo";
 import { useParams } from "next/navigation";
 import { getDictionary } from "@/utils/dictionaries";
 import { useEffect, useState } from "react";
+import Debugtools from "./Debugtools";
 
 // TODO:
 // - Add language support
@@ -39,36 +40,6 @@ const Navbar = () => {
     return handleSignOut();
   };
 
-  const LogUsersButton = () => {
-    const handlelogAllUsers = async () => {
-      return (
-        <form
-          action={async () => {
-            await logAllUsers();
-          }}
-        >
-          <button type="submit">users</button>
-        </form>
-      );
-    };
-    return handlelogAllUsers();
-  };
-
-  const LogChatsButton = () => {
-    const handlelogAllChats = async () => {
-      return (
-        <form
-          action={async () => {
-            await logAllChats();
-          }}
-        >
-          <button type="submit">chats</button>
-        </form>
-      );
-    };
-    return handlelogAllChats();
-  };
-
   return (
     <div className="bg-tinder-pink p-4">
       <nav className="flex flex-col sm:flex-row mx-auto justify-center items-center">
@@ -99,11 +70,7 @@ const Navbar = () => {
             Profile
           </Link>
         </div>
-        <div className="flex flex-col sm:flex-row items-center gap-2">
-          <h3>DEBUG TOOLS</h3>
-          <LogUsersButton />
-          <LogChatsButton />
-        </div>
+        <Debugtools />
         <div>
           <div>
             <SignOutButton />

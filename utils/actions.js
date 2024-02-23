@@ -451,7 +451,6 @@ CHAT
 ***********************************/
 
 // TODO:
-// - testing needed
 // - Make it check matches both ways
 export async function getChatUsers(userID) {
   try {
@@ -467,14 +466,16 @@ export async function getChatUsers(userID) {
     let users = await User.findOne({ _id: userID }, "goodFriends");
 
     // Get liked users' data
-    users = await User.find({ _id: { $in: users.goodFriends } });
-    let usersProps = [];
-    users.map((user) => {
-      usersProps.push({
-        id: user._id.toString(),
-        username: user.username,
-      });
+    users = await User.find({
+      _id: { $in: users.goodFriends },
+      goodFriends: userID,
     });
+
+    // Create user props
+    const usersProps = users.map(user => ({
+      id: user._id.toString(),
+      username: user.username,
+    }));
 
     console.log(usersProps); // debug
 
@@ -522,7 +523,6 @@ export async function getChatMessages(userID, matchID) {
       let matchUsername = "not found";
       const user = await User.findOne({ _id: matchID });
       if (user) {
-        console.log(user); // debug
         matchUsername = user.username;
       }
 
@@ -541,8 +541,6 @@ export async function getChatMessages(userID, matchID) {
   }
 }
 
-//TODO:
-// - testing needed
 export async function getHandleMessageSend(formData) {
   try {
     // Validate form data
@@ -560,10 +558,6 @@ export async function getHandleMessageSend(formData) {
     const userID = formData.get("userID");
     const matchID = formData.get("matchID");
     const message = formData.get("message");
-
-    console.log(userID); // debug
-    console.log(matchID); // debug
-    console.log(message); // debug
 
     // Connect to database
     await dbConnect();
@@ -632,38 +626,19 @@ export async function createDummyUsers() {
     await dbConnect();
 
     // Create dummy users
-    const dummyUsers = [
-      {
-        username: "Dummy1",
-        email: "asd@example.com",
+    const dummyUsers = [];
+
+    // Use for loop to create 5 dummy users
+    for (let i = 1; i <= 5; i++) {
+      const randomNumber = Math.floor(Math.random() * 10000);
+      const dummyUser = {
+        username: `Dummy${i}_${randomNumber}`,
+        email: `asd${randomNumber}@example.com`,
         password: "123123",
         bio: "I'm a dummy user.",
-      },
-      {
-        username: "Dummy2",
-        email: "asd@example.com",
-        password: "123123",
-        bio: "I'm a dummy user.",
-      },
-      {
-        username: "Dummy3",
-        email: "asd@example.com",
-        password: "123123",
-        bio: "I'm a dummy user.",
-      },
-      {
-        username: "Dummy4",
-        email: "asd@example.com",
-        password: "123123",
-        bio: "I'm a dummy user.",
-      },
-      {
-        username: "Dummy5",
-        email: "asd@example.com",
-        password: "123123",
-        bio: "I'm a dummy user.",
-      },
-    ];
+      };
+      dummyUsers.push(dummyUser);
+    }
 
     // Save dummy users
     dummyUsers.forEach(async (dummyUser) => {
@@ -671,9 +646,28 @@ export async function createDummyUsers() {
       await user.save();
       console.log(user); // debug
     });
+    console.log("***DUMMY USERS CREATED***"); // debug
   } catch (error) {
     console.log(error); // debug
   }
 }
 
+export async function likeMe() {
+  try {
+    console.log("***LIKING ME***"); // debug
+    // Get userID
+    const session = cookies().get("session");
+    const decodedSession = jwt.verify(session.value, process.env.AUTH_SECRET);
+    const userID = decodedSession.userID;
 
+    // Connect to database
+    await dbConnect();
+
+    // Make all users like user
+    await User.updateMany({}, { $push: { goodFriends: userID } });
+
+    console.log("***LIKED ME***"); // debug
+  } catch (error) {
+    console.log(error); // debug
+  }
+}
