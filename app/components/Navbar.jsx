@@ -49,23 +49,25 @@ const Navbar = () => {
           </Link>
         </div>
         <div
-          className={`sm:flex mx-auto w-full text-2xl m-2 $ sm:items-center items-stretch justify-center sm:justify-start`}
+          className={`sm:flex mx-auto w-full text-3xl m-2 $ sm:items-center items-stretch mx-auto justify-center sm:justify-start gap-4`}
         >
           <Link
             href="/home/match"
-            className="text-white devider-right hover:text-tinder-gray"
+            className="text-white hover:text-tinder-gray m-2 sm:mx-3"
           >
             Match
           </Link>
+          <span className="text-grey text-4xl sm:block hidden">|</span>
           <Link
             href="/home/chat"
-            className="text-white devider-right hover:text-tinder-gray"
+            className="text-white hover:text-tinder-gray m-2 sm:mx-3"
           >
             Chat
           </Link>
+          <span className="text-grey text-4xl sm:block hidden">|</span>
           <Link
             href="/home/profile"
-            className="text-white devider-left hover:text-tinder-gray"
+            className="text-white hover:text-tinder-gray m-2 sm:mx-3"
           >
             Profile
           </Link>

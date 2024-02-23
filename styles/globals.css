@@ -3,18 +3,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
-.devider-right {
-    border-right: 2px solid gray;
-    padding: 0 0.5rem;
-}
-
-.devider-left {
-    padding: 0 0.5rem;
-}
-
-.devider-bottom {
-    border-bottom: 2px solid gray;
-    padding: 0 0.5rem;
-}

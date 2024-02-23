@@ -90,13 +90,15 @@ const Chat = ({ userID, dict }) => {
 
   return (
     <div className="flex">
-      <div className="w-1/4 h-screen overflow-y-auto border-r border-gray-300">
-        <h2 className="text-lg font-semibold p-4">{dict.chat.matches}</h2>
+      <div className="w-1/4 h-screen overflow-y-auto border-r-4 border-tinder-pink bg-tinder-gray text-white">
+        <h2 className="text-lg font-bold p-4 border-b-2 border-tinder-pink">
+          {dict.chat.matches}
+        </h2>
         <ul>
           {chatUsers.map((user) => (
             <li
               key={user.id}
-              className="p-4 cursor-pointer hover:bg-gray-100"
+              className="p-4 cursor-pointer hover:bg-tinder-pink hover:text-tinder-gray font-semibold tracking-wide"
               onClick={() => userClick(user.id)}
             >
               {user.username}
@@ -110,6 +112,8 @@ const Chat = ({ userID, dict }) => {
             <h2 className="text-xl font-semibold mb-4">
               {chatUsers.find((user) => user.id === currentChat).username}
             </h2>
+            <span className="bg-tinder-gray border-b-2 border-tinder-gray block h-0.5 m-2"></span>
+
             <ul>
               {messages.map((message, index) => (
                 <li key={index} className="mb-2">
@@ -131,7 +135,7 @@ const Chat = ({ userID, dict }) => {
                 <input type="hidden" name="matchID" value={currentChat} />
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded-r hover:bg-blue-600 focus:outline-none"
+                  className="px-4 py-2 bg-tinder-pink text-white rounded-r hover:bg-tinder-gray focus:outline-none"
                 >
                   {dict.chat.send}
                 </button>

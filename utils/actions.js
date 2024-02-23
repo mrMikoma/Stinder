@@ -194,9 +194,8 @@ export async function getNextUser(userID) {
       return "no more users";
     }
 
+    // Get next user's ID
     const nextUserID = nextUser._id.toString();
-
-    console.log("ARVO ON: " + nextUserID); // debug
 
     // Return userID as response
     return nextUserID;
@@ -450,8 +449,6 @@ export async function getDisLikedUsers(userID) {
 CHAT
 ***********************************/
 
-// TODO:
-// - Make it check matches both ways
 export async function getChatUsers(userID) {
   try {
     // Validate userID
@@ -472,7 +469,7 @@ export async function getChatUsers(userID) {
     });
 
     // Create user props
-    const usersProps = users.map(user => ({
+    const usersProps = users.map((user) => ({
       id: user._id.toString(),
       username: user.username,
     }));
@@ -632,7 +629,7 @@ export async function createDummyUsers() {
     for (let i = 1; i <= 5; i++) {
       const randomNumber = Math.floor(Math.random() * 10000);
       const dummyUser = {
-        username: `Dummy${i}_${randomNumber}`,
+        username: `Dummy Virtanen ${randomNumber}`,
         email: `asd${randomNumber}@example.com`,
         password: "123123",
         bio: "I'm a dummy user.",

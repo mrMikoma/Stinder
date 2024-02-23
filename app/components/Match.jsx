@@ -10,6 +10,9 @@ import Matchcard from "./Matchcard";
 import Likeicon from "./icons/likeicon";
 import Dislikeicon from "./icons/dislikeicon";
 
+// Knwon issues:
+// - Front does not update after like/dislike (matchID is updated but not the user props)
+
 const Match = ({ userID, dict }) => {
   const [nextUserProps, setNextUserProps] = useState(null);
   const [matchID, setMatchID] = useState(null);
