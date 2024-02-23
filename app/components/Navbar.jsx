@@ -3,28 +3,11 @@ import Link from "next/link";
 import { signOut } from "@/utils/actions";
 import Logo from "./Logo";
 import { useParams, useRouter } from "next/navigation";
-import { getDictionary } from "@/utils/dictionaries";
-import { useEffect, useState } from "react";
 import Debugtools from "./Debugtools";
 
-// TODO:
-// - Add language support
-
-const Navbar = () => {
+const Navbar = ({ dict }) => {
   const lang = useParams().lang;
   const router = useRouter();
-
-  /* FIX THIS
-  const [dict, setDictionary] = useState({});
-  useEffect(() => {
-    const handleGetDictionary = async (lang) => {
-      const dict = await getDictionary(lang);
-      setDictionary(dict);
-    };
-    handleGetDictionary(lang);
-  }, []);
-  console.log(dict ? dict.nav : "no dictionary");
-  */
 
   const SignOutButton = () => {
     const handleSignOut = async () => {
@@ -35,7 +18,7 @@ const Navbar = () => {
             router.push("/");
           }}
         >
-          <button type="submit">Sign out</button>
+          <button type="submit">{dict.nav.logout}</button>
         </form>
       );
     };
@@ -57,21 +40,21 @@ const Navbar = () => {
             href="/home/match"
             className="text-white hover:text-tinder-gray m-2 sm:mx-3"
           >
-            Match
+            {dict.nav.match}
           </Link>
           <span className="text-grey text-4xl sm:block hidden">|</span>
           <Link
             href="/home/chat"
             className="text-white hover:text-tinder-gray m-2 sm:mx-3"
           >
-            Chat
+            {dict.nav.chat}
           </Link>
           <span className="text-grey text-4xl sm:block hidden">|</span>
           <Link
             href="/home/profile"
             className="text-white hover:text-tinder-gray m-2 sm:mx-3"
           >
-            Profile
+            {dict.nav.profile}
           </Link>
         </div>
         <Debugtools />

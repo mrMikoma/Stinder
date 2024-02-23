@@ -1,71 +1,71 @@
 {
   "common": {
     "title": "LUT-Stinder",
-    "description": "Official website of LUT-Stinder",
-    "welcome": "Welcome to LUT-Stinder website"
+    "description": "LUT-Stinderin virallinen verkkosivusto",
+    "welcome": "Tervetuloa LUT-Stinderiin"
   },
 
   "nav": {
-    "home": "Home",
-    "chat": "Chat",
-    "match": "Match",
-    "login": "Login",
-    "login_google": "Login with Google",
-    "logout": "Logout",
-    "register": "Register",
-    "profile": "Profile"
+    "home": "Koti",
+    "chat": "Keskustelu",
+    "match": "Ottelu",
+    "login": "Kirjaudu sisään",
+    "logout": "Kirjaudu ulos",
+    "register": "Rekisteröidy",
+    "profile": "Profiili"
   },
 
   "register": {
-    "title": "Register",
-    "username": "Username",
-    "password": "Password",
-    "password2": "Confirm password",
-    "submit": "Register",
-    "error": "Username already exists",
-    "success": "Registration successful"
+    "title": "Rekisteröidy",
+    "username": "Käyttäjänimi",
+    "email": "Sähköposti",
+    "password": "Salasana",
+    "submit": "Rekisteröidy",
+    "error": "Käyttäjänimen tai sähköpostin rekisteröinti epäonnistui",
+    "success": "Rekisteröinti onnistui"
   },
 
   "login": {
-    "title": "Login",
-    "username": "Username",
-    "password": "Password",
-    "submit": "Login",
-    "error": "Invalid username or password",
-    "success": "Login successful",
-    "logout": "Logout successful",
-    "loginproblem": "Trouble logging in?"
+    "title": "Kirjaudu sisään",
+    "email": "Sähköposti",
+    "password": "Salasana",
+    "submit": "Kirjaudu",
+    "error": "Virhe käyttäjänimi tai salasanan kanssa",
+    "success": "Kirjautuminen onnistui",
+    "logout": "Uloskirjautuminen onnistui",
+    "loginproblem": "Vaikauksia kirjautumisessa?"
   },
 
   "profile": {
-    "title": "Profile",
-    "edit_profile": "Edit profile",
-    "username": "Username",
+    "title": "Profiili",
+    "sub_title": "Sinun profiilisi",
+    "edit_profile": "Muokkaa profiilia",
+    "username": "Käyttäjänimi",
     "bio": "Bio",
-    "submit": "Save",
-    "error": "Profile update failed",
-    "success": "Profile update successful",
-    "liked_profiles": "Liked profiles",
-    "disliked_profiles": "Disliked profiles",
-    "no_liked_profiles": "No liked profiles",
-    "no_disliked_profiles": "No disliked profiles"
+    "submit": "Tallenna",
+    "error": "Profiilin päivitys epäonnistui",
+    "success": "Profiili päivitetty",
+    "liked_profiles": "Tykätyt profiilit",
+    "disliked_profiles": "Ei tykätyt profiilit",
+    "no_liked_profiles": "Ei tykättyjä profiileja",
+    "no_disliked_profiles": "Ei ei-tykättyjä profiileja"
   },
   "chat": {
-    "title": "Chat",
-    "send": "Send",
-    "matches": "Matches",
-    "chatwith": "Chat with",
-    "typeMessage": "Write a message",
-    "error": "Message sending failed",
-    "success": "Message sent",
-    "no_messages": "No messages",
-    "no_chat": "No chat"
+    "title": "Keskustelu",
+    "send": "Lähetä",
+    "matches": "Yhteytesi",
+    "chatwith": "Keskustelu",
+    "typeMessage": "Kirjoita viesti",
+    "error": "Virhe viestin lähetyksessä",
+    "success": "Viesti lähetetty",
+    "no_messages": "Ei viestejä",
+    "no_chat": "Ei keskusteluita"
   },
   "match": {
-    "title": "Match",
-    "like": "Like",
-    "dislike": "Dislike",
-    "no_matches": "No matches",
-    "no_more_matches": "No more matches"
+    "title": "Ottelu",
+    "like": "Tykkää",
+    "dislike": "Ei tykkää",
+    "no_matches": "Ei otteluita",
+    "no_more_matches": "Ei enempää otteluita"
   }
 }

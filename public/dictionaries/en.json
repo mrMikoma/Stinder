@@ -39,6 +39,7 @@
 
   "profile": {
     "title": "Profile",
+    "sub_title": "Your profile",
     "edit_profile": "Edit profile",
     "username": "Username",
     "bio": "Bio",

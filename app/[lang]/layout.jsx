@@ -1,4 +1,5 @@
 import "../../styles/globals.css";
+import Footer from "../components/Footer";
 
 export const metadata = {
   title: "LUT-Stinder",
@@ -10,12 +11,15 @@ export const metadata = {
   },
 };
 
-const RootLayout = ({ children }) => (
-  <html>
-    <body>
-      <main className="bg-tinder-pink">{children}</main>
-    </body>
-  </html>
-);
+const RootLayout = ({ children }) => {
+  return (
+    <html>
+      <body>
+        <main className="bg-tinder-pink">{children}</main>
+        <Footer />
+      </body>
+    </html>
+  );
+};
 
 export default RootLayout;

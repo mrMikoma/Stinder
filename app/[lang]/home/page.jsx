@@ -33,7 +33,7 @@ const Profile = async ({ params: { lang } }) => {
     }
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-white text-black relative">
-        <h1 className="text-2xl text-bold">Your profile</h1>
+        <h1 className="text-2xl text-bold">{dict.profile.sub_title}</h1>
         <div className="flex flex-col items-center">
           <Matchcard props={props} />
         </div>
