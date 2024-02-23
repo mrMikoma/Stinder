@@ -1,6 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
-import { getHandleMessageSend } from "@/utils/actions";
+import { useState, useEffect, use } from "react";
+import {
+  getChatUsers,
+  getChatMessages,
+  getHandleMessageSend,
+} from "@/utils/actions";
 
 const Chat = ({ userID, dict }) => {
   const [chatUsers, setChatUsers] = useState([]);
@@ -9,38 +13,79 @@ const Chat = ({ userID, dict }) => {
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    // Dummy chat users
-    const dummyUsers = [
-      { id: 1, name: "John Doe" },
-      { id: 2, name: "Jane Smith" },
-      { id: 3, name: "Alice Johnson" },
-      { id: 4, name: "Bob Brown" },
-    ];
+    // Handle get chat users
+    const handleGetChatUsers = async () => {
+      console.log("Fetching chat users..."); // debug
+      console.log("User ID:", userID); // debug
 
-    setChatUsers(dummyUsers);
-  }, []);
+      // Get chat users
+      const chatUsers = await getChatUsers(userID);
+      console.log("Chat users:"); // debug
+      console.log(chatUsers); // debug
 
-  const handleUserClick = async (userId) => {
-    // Dummy messages
-    const dummyMessages = [
-      { senderName: "John Doe", text: "Hello!" },
-      { senderName: "You", text: "Hi John!" },
-      { senderName: "John Doe", text: "How are you?" },
-    ];
+      // Set chat users
+      setChatUsers(chatUsers);
+    };
 
-    setMessages(dummyMessages);
-    setCurrentChat(userId);
+    handleGetChatUsers();
+  }, [userID]);
+
+  const userClick = async (matchID) => {
+    // Get user click handler
+    const handleUserClick = async (matchID) => {
+      console.log("Fetching messages..."); // debug
+
+      // Set current chat
+      setCurrentChat(matchID);
+      console.log("TÄSSÄ:"); // debug
+      console.log(userID); // debug
+      console.log(currentChat); // debug
+
+      // Get messages
+      const messages = await getChatMessages(userID, matchID);
+
+      // Set messages
+      if (!messages) {
+        setMessages(messages);
+        console.log("No messages."); // debug
+      } else if (messages.length === 0) {
+        setMessages(messages);
+        console.log("No messages."); // debug
+      }
+
+      setMessages(messages);
+    };
+
+    handleUserClick(matchID);
   };
 
-  const handleMessageSend = () => {
+  const messageSend = (formData) => {
+    // Handle empty message
     if (newMessage.trim() === "") return;
 
-    const updatedMessages = [
-      ...messages,
-      { senderName: "You", text: newMessage },
-    ];
-    setMessages(updatedMessages);
-    setNewMessage("");
+    // Get message send handler
+    const handleMessageSend = async (formData) => {
+      console.log("Sending message..."); // debug
+
+      // Send message
+      const response = await getHandleMessageSend(formData);
+      console.log("Response:"); // debug
+      console.log(response); // debug
+
+      // Handle client-side
+      if (response === "success") {
+        const updatedMessages = [
+          ...messages,
+          { senderName: "You", text: newMessage },
+        ];
+        setMessages(updatedMessages);
+        setNewMessage("");
+      } else {
+        console.log("Message send failed."); // debug
+      }
+    };
+
+    handleMessageSend(formData);
   };
 
   return (
@@ -52,9 +97,9 @@ const Chat = ({ userID, dict }) => {
             <li
               key={user.id}
               className="p-4 cursor-pointer hover:bg-gray-100"
-              onClick={() => handleUserClick(user.id)}
+              onClick={() => userClick(user.id)}
             >
-              {user.name}
+              {user.username}
             </li>
           ))}
         </ul>
@@ -63,7 +108,7 @@ const Chat = ({ userID, dict }) => {
         {currentChat && (
           <div className="p-4">
             <h2 className="text-xl font-semibold mb-4">
-              {chatUsers.find((user) => user.id === currentChat)?.name}
+              {chatUsers.find((user) => user.id === currentChat).username}
             </h2>
             <ul>
               {messages.map((message, index) => (
@@ -73,7 +118,7 @@ const Chat = ({ userID, dict }) => {
               ))}
             </ul>
             <div>
-              <form className="mt-4 flex" action={getHandleMessageSend}>
+              <form className="mt-4 flex" action={messageSend}>
                 <input
                   type="text"
                   name="message"

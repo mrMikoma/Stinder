@@ -20,7 +20,7 @@ const Match = ({ userID, dict }) => {
       console.log("Getting next user..."); // debug
       let nextUserID = await getNextUser(userID);
       console.log("Next user is:"); // debug
-      console.log("CLIENT ARVO ON: " + nextUserID); // debug
+      console.log(nextUserID); // debug
 
       // Set matchID and handle error
       if (nextUserID === "no more users" || !nextUserID) {

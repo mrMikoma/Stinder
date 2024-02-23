@@ -4,12 +4,12 @@ const Schema = mongoose.Schema;
 // Define user schema
 const chatSchema = new mongoose.Schema(
   {
-    senderId: {
+    senderID: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    receiverId: {
+    receiverID: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,

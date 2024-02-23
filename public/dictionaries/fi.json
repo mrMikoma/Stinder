@@ -1,29 +1,71 @@
 {
   "common": {
     "title": "LUT-Stinder",
-    "description": "Tämä on LUT-Stinderin kotisivu",
-    "welcome": "Tervetuloa LUT-Stinderiin!"
+    "description": "Official website of LUT-Stinder",
+    "welcome": "Welcome to LUT-Stinder website"
   },
 
   "nav": {
-    "home": "Koti",
-    "chat": "Keskustelu",
-    "match": "Parita",
-    "login": "Kirjaudu sisään",
-    "login_google": "Kirjaudu sisään Google-tilillä",
-    "logout": "Kirjaudu ulos",
-    "register": "Rekisteröidy",
-    "profile": "Profiili"
+    "home": "Home",
+    "chat": "Chat",
+    "match": "Match",
+    "login": "Login",
+    "login_google": "Login with Google",
+    "logout": "Logout",
+    "register": "Register",
+    "profile": "Profile"
+  },
+
+  "register": {
+    "title": "Register",
+    "username": "Username",
+    "password": "Password",
+    "password2": "Confirm password",
+    "submit": "Register",
+    "error": "Username already exists",
+    "success": "Registration successful"
   },
 
   "login": {
-    "title": "Kirjaudu sisään",
-    "username": "Käyttäjänimi",
-    "password": "Salasana",
-    "submit": "Kirjaudu sisään",
-    "error": "Virhe kirjautumisessa",
-    "success": "Kirjautuminen onnistui",
-    "logout": "Ulos kirjautuminen onnistui",
-    "loginproblem": "Ongelma kirjautumisessa?"
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Login",
+    "error": "Invalid username or password",
+    "success": "Login successful",
+    "logout": "Logout successful",
+    "loginproblem": "Trouble logging in?"
+  },
+
+  "profile": {
+    "title": "Profile",
+    "edit_profile": "Edit profile",
+    "username": "Username",
+    "bio": "Bio",
+    "submit": "Save",
+    "error": "Profile update failed",
+    "success": "Profile update successful",
+    "liked_profiles": "Liked profiles",
+    "disliked_profiles": "Disliked profiles",
+    "no_liked_profiles": "No liked profiles",
+    "no_disliked_profiles": "No disliked profiles"
+  },
+  "chat": {
+    "title": "Chat",
+    "send": "Send",
+    "matches": "Matches",
+    "chatwith": "Chat with",
+    "typeMessage": "Write a message",
+    "error": "Message sending failed",
+    "success": "Message sent",
+    "no_messages": "No messages",
+    "no_chat": "No chat"
+  },
+  "match": {
+    "title": "Match",
+    "like": "Like",
+    "dislike": "Dislike",
+    "no_matches": "No matches",
+    "no_more_matches": "No more matches"
   }
 }

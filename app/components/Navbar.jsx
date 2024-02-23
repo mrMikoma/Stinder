@@ -1,35 +1,72 @@
+"use client";
 import Link from "next/link";
-import { logAllUsers, signOut } from "@/utils/actions";
-import { cookies } from "next/headers";
+import { logAllChats, logAllUsers, signOut } from "@/utils/actions";
 import Logo from "./Logo";
+import { useParams } from "next/navigation";
+import { getDictionary } from "@/utils/dictionaries";
+import { useEffect, useState } from "react";
 
-const Navbar = async () => {
-  const session = cookies().get("session");
+// TODO:
+// - Add language support
 
-  const SignOut = () => {
-    return (
-      <form
-        action={async () => {
-          "use server";
-          await signOut();
-        }}
-      >
-        <button type="submit">Sign out</button>
-      </form>
-    );
+const Navbar = () => {
+  const lang = useParams().lang;
+
+  /* FIX THIS
+  const [dict, setDictionary] = useState({});
+  useEffect(() => {
+    const handleGetDictionary = async (lang) => {
+      const dict = await getDictionary(lang);
+      setDictionary(dict);
+    };
+    handleGetDictionary(lang);
+  }, []);
+  console.log(dict ? dict.nav : "no dictionary");
+  */
+
+  const SignOutButton = () => {
+    const handleSignOut = async () => {
+      return (
+        <form
+          action={async () => {
+            await signOut();
+          }}
+        >
+          <button type="submit">Sign out</button>
+        </form>
+      );
+    };
+    return handleSignOut();
   };
 
-  const LogUsers = () => {
-    return (
-      <form
-        action={async () => {
-          "use server";
-          await logAllUsers();
-        }}
-      >
-        <button type="submit">users</button>
-      </form>
-    );
+  const LogUsersButton = () => {
+    const handlelogAllUsers = async () => {
+      return (
+        <form
+          action={async () => {
+            await logAllUsers();
+          }}
+        >
+          <button type="submit">users</button>
+        </form>
+      );
+    };
+    return handlelogAllUsers();
+  };
+
+  const LogChatsButton = () => {
+    const handlelogAllChats = async () => {
+      return (
+        <form
+          action={async () => {
+            await logAllChats();
+          }}
+        >
+          <button type="submit">chats</button>
+        </form>
+      );
+    };
+    return handlelogAllChats();
   };
 
   return (
@@ -62,13 +99,14 @@ const Navbar = async () => {
             Profile
           </Link>
         </div>
-        <div className="flex flex-row sm:flex-col items-center">
-          <LogUsers />
+        <div className="flex flex-col sm:flex-row items-center gap-2">
+          <h3>DEBUG TOOLS</h3>
+          <LogUsersButton />
+          <LogChatsButton />
         </div>
         <div>
           <div>
-            {session?.user ? session.user.name : null}
-            {session ? <SignOut /> : <Link href="/en/auth/login">Sign in</Link>}
+            <SignOutButton />
           </div>
         </div>
         <div className="flex flex-row sm:flex-col items-center">

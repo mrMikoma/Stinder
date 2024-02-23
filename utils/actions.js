@@ -15,7 +15,7 @@ import { revalidatePath } from "next/cache";
 // - https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations
 
 // TODO:
-// - 
+// -
 
 /**********************************
 AUTHENTICATION AND USER MANAGEMENT
@@ -471,7 +471,7 @@ export async function getChatUsers(userID) {
     let usersProps = [];
     users.map((user) => {
       usersProps.push({
-        id: user._id,
+        id: user._id.toString(),
         username: user.username,
       });
     });
@@ -485,38 +485,57 @@ export async function getChatUsers(userID) {
   }
 }
 
-// TODO:
-// - testing needed
-export async function getChatMessages(formData) {
+export async function getChatMessages(userID, matchID) {
   try {
-    // Validate form data
-    if (!formData) {
-      throw new Error("Form data is required.");
-    } else if (!formData.get("userID")) {
+    // Validate userIDs
+    if (!userID) {
       throw new Error("User ID is required.");
-    } else if (!formData.get("matchID")) {
+    } else if (!matchID) {
       throw new Error("Match ID is required.");
     }
-
-    // Parse form data
-    const userID = formData.get("userID");
-    const matchID = formData.get("matchID");
 
     // Connect to database
     await dbConnect();
 
     // Get chat messages
-    const messages = await Chat.find({
+    let messages = await Chat.find({
       $or: [
-        { senderId: userID, receiverId: matchID },
-        { senderId: matchID, receiverId: userID },
+        { senderID: userID, receiverID: matchID },
+        { senderID: matchID, receiverID: userID },
       ],
     });
 
-    console.log(messages); // debug
+    // Handle no messages
+    let parsedMessages = [];
+    if (!messages || messages.length === 0) {
+      parsedMessages = [
+        {
+          id: "1",
+          senderName: "ERROR",
+          text: "no messages",
+          time: "now",
+        },
+      ];
+      console.log("No messages."); // debug
+    } else {
+      // Find sender's username
+      let matchUsername = "not found";
+      const user = await User.findOne({ _id: matchID });
+      if (user) {
+        console.log(user); // debug
+        matchUsername = user.username;
+      }
 
-    // Return chat messages
-    return messages;
+      // Parse messages
+      parsedMessages = messages.map((message) => ({
+        senderName: message.senderID == userID ? "you" : matchUsername,
+        text: message.message,
+        time: message.createdAt,
+      }));
+    }
+    console.log(parsedMessages); // debug
+    // Return parsed messages
+    return parsedMessages;
   } catch (error) {
     console.log(error); // debug
   }
@@ -524,7 +543,6 @@ export async function getChatMessages(formData) {
 
 //TODO:
 // - testing needed
-// - make it handle messages
 export async function getHandleMessageSend(formData) {
   try {
     // Validate form data
@@ -543,10 +561,23 @@ export async function getHandleMessageSend(formData) {
     const matchID = formData.get("matchID");
     const message = formData.get("message");
 
+    console.log(userID); // debug
+    console.log(matchID); // debug
     console.log(message); // debug
 
-    // Handle message send
-    // TODO
+    // Connect to database
+    await dbConnect();
+
+    // Create chat message
+    const chatMessage = new Chat({
+      senderID: userID,
+      receiverID: matchID,
+      message: message,
+    });
+
+    // Save chat message
+    await chatMessage.save();
+    console.log("Message saved."); // debug
 
     // Return response
     return "success";
@@ -575,3 +606,74 @@ export async function logAllUsers() {
     console.log(error); // debug
   }
 }
+
+export async function logAllChats() {
+  try {
+    console.log("***LOGGING ALL CHATS FROM DB***"); // debug
+    // Connect to database
+    await dbConnect();
+
+    // Get all users
+    const allChats = await Chat.find({});
+    allChats.forEach((chat) => {
+      console.log(chat); // debug
+    });
+
+    console.log("***ALL CHATS LOGGED***"); // debug
+  } catch (error) {
+    console.log(error); // debug
+  }
+}
+
+export async function createDummyUsers() {
+  try {
+    console.log("***CREATING DUMMY USERS***"); // debug
+    // Connect to database
+    await dbConnect();
+
+    // Create dummy users
+    const dummyUsers = [
+      {
+        username: "Dummy1",
+        email: "asd@example.com",
+        password: "123123",
+        bio: "I'm a dummy user.",
+      },
+      {
+        username: "Dummy2",
+        email: "asd@example.com",
+        password: "123123",
+        bio: "I'm a dummy user.",
+      },
+      {
+        username: "Dummy3",
+        email: "asd@example.com",
+        password: "123123",
+        bio: "I'm a dummy user.",
+      },
+      {
+        username: "Dummy4",
+        email: "asd@example.com",
+        password: "123123",
+        bio: "I'm a dummy user.",
+      },
+      {
+        username: "Dummy5",
+        email: "asd@example.com",
+        password: "123123",
+        bio: "I'm a dummy user.",
+      },
+    ];
+
+    // Save dummy users
+    dummyUsers.forEach(async (dummyUser) => {
+      const user = new User(dummyUser);
+      await user.save();
+      console.log(user); // debug
+    });
+  } catch (error) {
+    console.log(error); // debug
+  }
+}
+
+
