@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { signOut } from "@/utils/actions";
 import Logo from "./Logo";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { getDictionary } from "@/utils/dictionaries";
 import { useEffect, useState } from "react";
 import Debugtools from "./Debugtools";
@@ -12,6 +12,7 @@ import Debugtools from "./Debugtools";
 
 const Navbar = () => {
   const lang = useParams().lang;
+  const router = useRouter();
 
   /* FIX THIS
   const [dict, setDictionary] = useState({});
@@ -31,6 +32,7 @@ const Navbar = () => {
         <form
           action={async () => {
             await signOut();
+            router.push("/");
           }}
         >
           <button type="submit">Sign out</button>
@@ -44,7 +46,7 @@ const Navbar = () => {
     <div className="bg-tinder-pink p-4">
       <nav className="flex flex-col sm:flex-row mx-auto justify-center items-center">
         <div className="flex-initial p-2">
-          <Link href="/" className="text-unna-white flex-none">
+          <Link href="/home" className="text-unna-white flex-none">
             <Logo />
           </Link>
         </div>
@@ -86,7 +88,7 @@ const Navbar = () => {
           >
             <p className="">FI</p>
           </Link>
-          <span className="devider-bottom text-grey m-2"></span>
+          <span className="text-grey text-lg sm:block hidden">|</span>
           <Link
             href="/en"
             locale="en"

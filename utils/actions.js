@@ -64,12 +64,14 @@ export async function register(formData) {
 
     // Save user
     await newUser.save();
+
+    // Return response
     console.log("User saved."); // debug
     return "success";
   } catch (error) {
     console.log(error); // debug
   }
-  redirect("/auth/login");
+  redirect("/auth/login", "page");
 }
 
 // TODO:
