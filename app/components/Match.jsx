@@ -10,9 +10,6 @@ import Matchcard from "./Matchcard";
 import Likeicon from "./icons/likeicon";
 import Dislikeicon from "./icons/dislikeicon";
 
-// Knwon issues:
-// - Front does not update after like/dislike (matchID is updated but not the user props)
-
 const Match = ({ userID, dict }) => {
   const [nextUserProps, setNextUserProps] = useState(null);
   const [matchID, setMatchID] = useState(null);
@@ -59,14 +56,21 @@ const Match = ({ userID, dict }) => {
       await getLikeUser(formData);
 
       // Get next user
-      let matchID = await getNextUser(userID);
+      let nextUserID = await getNextUser(userID);
 
-      // Set matchID and handle error
-      if (matchID === "no more matches") {
+      // Set data and handle error
+      if (nextUserID === "no more matches") {
         setNextUserProps(null);
         setMatchID(null);
       } else {
-        setMatchID(matchID);
+        // Set matchID
+        setMatchID(nextUserID);
+
+        // Get next user props
+        let nextUserProps = await getUserData(nextUserID);
+        console.log("Next user props are:"); // debug
+        console.log(nextUserProps); // debug
+        setNextUserProps(nextUserProps);
       }
     };
     likeUser(formData);
@@ -88,14 +92,21 @@ const Match = ({ userID, dict }) => {
       await getDisLikeUser(formData);
 
       // Get next user
-      let matchID = await getNextUser(userID);
+      let nextUserID = await getNextUser(userID);
 
-      // Set matchID and handle error
-      if (matchID === "no more matches") {
+      // Set data and handle error
+      if (nextUserID === "no more matches") {
         setNextUserProps(null);
         setMatchID(null);
       } else {
-        setMatchID(matchID);
+        // Set matchID
+        setMatchID(nextUserID);
+
+        // Get next user props
+        let nextUserProps = await getUserData(nextUserID);
+        console.log("Next user props are:"); // debug
+        console.log(nextUserProps); // debug
+        setNextUserProps(nextUserProps);
       }
     };
     likeUser(formData);
@@ -104,14 +115,13 @@ const Match = ({ userID, dict }) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white text-black relative">
       <div className="flex flex-col items-center">
-        <h2 className="text-2xl font-bold">{matchID}</h2>
-        {nextUserProps ? (
+        {matchID !== "no more users" && nextUserProps ? (
           <Matchcard props={nextUserProps} />
         ) : (
           <h1 className="text-2xl font-bold">{dict.match.no_more_matches}</h1>
         )}
       </div>
-      {nextUserProps ? (
+      {matchID !== "no more users" && nextUserProps ? (
         <div className="flex justify-center w-full p-4 gap-4">
           <form action={handleUserLike}>
             <input type="hidden" name="userID" value={userID} />

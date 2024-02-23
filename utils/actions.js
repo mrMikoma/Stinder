@@ -315,7 +315,12 @@ export async function getUserData(userID) {
   // Validate userID
   if (!userID) {
     throw new Error("User ID is required.");
+  } else if (userID == "no more users" || userID == null) {
+    console.log("No more found."); // debug
+    return "no more users";
   }
+
+  console.log(typeof userID + " " + userID); // debug
 
   // Connect to database
   await dbConnect();
@@ -323,7 +328,8 @@ export async function getUserData(userID) {
   // Get user
   let user = await User.findOne({ _id: userID });
   if (!user) {
-    throw new Error("User not found.");
+    console.log("User not found."); // debug
+    return "no more users";
   }
 
   // Convert user to object
