@@ -33,7 +33,7 @@
     "error": "Virhe käyttäjänimi tai salasanan kanssa",
     "success": "Kirjautuminen onnistui",
     "logout": "Uloskirjautuminen onnistui",
-    "loginproblem": "Vaikauksia kirjautumisessa?"
+    "loginproblem": "Vaikeuksia kirjautumisessa?"
   },
 
   "profile": {

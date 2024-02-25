@@ -88,6 +88,16 @@ const Chat = ({ userID, dict }) => {
     handleMessageSend(formData);
   };
 
+  // Format timestamp
+  const formatTimestamp = (timestamp) => {
+    const options = {
+      timeZone: 'Europe/Helsinki',
+      hour: 'numeric',
+      minute: 'numeric',
+    };
+    return new Date(timestamp).toLocaleString("fi", options);
+  };
+
   return (
     <div className="flex">
       <div className="w-1/4 h-screen overflow-y-auto border-r-4 border-tinder-pink bg-tinder-gray text-white">
@@ -113,11 +123,11 @@ const Chat = ({ userID, dict }) => {
               {chatUsers.find((user) => user.id === currentChat).username}
             </h2>
             <span className="bg-tinder-gray border-b-2 border-tinder-gray block h-0.5 m-2"></span>
-
             <ul>
               {messages.map((message, index) => (
                 <li key={index} className="mb-2">
                   <strong>{message.senderName}:</strong> {message.text}
+                  <span className="ml-2 text-gray-500 text-sm">({formatTimestamp(message.time)})</span>
                 </li>
               ))}
             </ul>

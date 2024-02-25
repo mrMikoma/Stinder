@@ -71,7 +71,6 @@ export async function register(formData) {
   } catch (error) {
     console.log(error); // debug
   }
-  redirect("/auth/login", "page");
 }
 
 // TODO:
@@ -120,7 +119,7 @@ export async function authenticate(formData) {
       username: user.username,
       email: user.email,
       bio: user.bio,
-      image: user.image,
+      image: "/images/ai_bot_kuva_1.png",
     };
 
     // Generate JWT token
@@ -336,7 +335,7 @@ export async function getUserData(userID) {
   const userProps = {
     username: user.username,
     bio: user.bio,
-    image: user.image,
+    imageSrc: user.image,
   };
 
   // Return user

@@ -26,14 +26,15 @@ const Match = async ({ params: { lang } }) => {
       // Update global variables
       userID = decodedSession.userID;
       console.log("User ID: " + userID); // debug
+      return (
+        <div>
+          <MatchC userID={userID} dict={dict} />
+        </div>
+      );
     } else {
       console.log("Session is invalid."); // debug
+      return <Unauthorized />;
     }
-    return (
-      <div>
-        <MatchC userID={userID} dict={dict} />
-      </div>
-    );
   }
 };
 

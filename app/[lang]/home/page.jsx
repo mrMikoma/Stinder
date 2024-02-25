@@ -25,20 +25,21 @@ const Profile = async ({ params: { lang } }) => {
       props = {
         userId: decodedSession.userId,
         username: decodedSession.username,
-        imageSrc: decodedSession.image,
+        imageSrc: "/images/ai_bot_kuva_1.png",
         bio: decodedSession.bio,
       };
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-white text-black relative">
+          <h1 className="text-2xl text-bold">{dict.common.welcome}</h1>
+          <div className="flex flex-col items-center">
+            <Matchcard props={props} />
+          </div>
+        </div>
+      );
     } else {
       console.log("Session is invalid."); // debug
+      return <Unauthorized />;
     }
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white text-black relative">
-        <h1 className="text-2xl text-bold">{dict.profile.sub_title}</h1>
-        <div className="flex flex-col items-center">
-          <Matchcard props={props} />
-        </div>
-      </div>
-    );
   }
 };
 

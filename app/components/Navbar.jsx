@@ -65,7 +65,7 @@ const Navbar = ({ dict }) => {
         </div>
         <div className="flex flex-row sm:flex-col items-center">
           <Link
-            href="/fi"
+            href="/fi/home/"
             locale="fi"
             className="text-unna-white m-1 hover:text-unna-beige"
           >
@@ -73,7 +73,7 @@ const Navbar = ({ dict }) => {
           </Link>
           <span className="text-grey text-lg sm:block hidden">|</span>
           <Link
-            href="/en"
+            href="/en/home/"
             locale="en"
             className="text-unna-white m-1 hover:text-unna-beige"
           >

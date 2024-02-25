@@ -24,15 +24,15 @@ const Chat = async ({ params: { lang } }) => {
     if (decodedSession) {
       userID = decodedSession.userID;
       console.log("Session is valid."); // debug
+      return (
+        <div className="bg-white">
+          <Chatc userID={userID} dict={dict} />
+        </div>
+      );
     } else {
       console.log("Session is invalid."); // debug
+      return <Unauthorized />;
     }
-
-    return (
-      <div className="bg-white">
-        <Chatc userID={userID} dict={dict} />
-      </div>
-    );
   }
 };
 
